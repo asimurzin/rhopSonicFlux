@@ -24,8 +24,8 @@
 
 
 #---------------------------------------------------------------------------
-from Foam.applications.solvers.compressible.r1_6.rhopSonicFoam.BCs import rho
-from Foam.applications.solvers.compressible.r1_6.rhopSonicFoam.BCs import rhoE
+from BCs import rho
+from BCs import rhoE
 
 #---------------------------------------------------------------------------
 def _rhoBoundaryTypes( p ):
@@ -38,11 +38,11 @@ def _rhoBoundaryTypes( p ):
            rhoBoundaryTypes[patchi] = zeroGradientFvPatchScalarField.typeName
            pass
         elif pbf[patchi].fixesValue():
-           from Foam.applications.solvers.compressible.rhoCentralFoam.BCs.rho import fixedRhoFvPatchScalarField
+           from BCs.rho import fixedRhoFvPatchScalarField
            rhoBoundaryTypes[patchi] = fixedRhoFvPatchScalarField.typeName
            pass
         else:
-           from Foam.applications.solvers.compressible.r1_6.rhopSonicFoam.BCs.rho import gradientRhoFvPatchScalarField
+           from BCs.rho import gradientRhoFvPatchScalarField
            rhoBoundaryTypes[patchi] = gradientRhoFvPatchScalarField.typeName
            pass
         pass
@@ -56,7 +56,7 @@ def _rhoUboundaryTypes( U ):
     rhoUboundaryTypes = Ubf.types()
     for patchi in range( rhoUboundaryTypes.size() ):
         if Ubf[patchi].fixesValue():
-           from Foam.applications.solvers.compressible.r1_6.rhopSonicFoam.BCs.rhoU import fixedRhoUFvPatchVectorField
+           from BCs.rhoU import fixedRhoUFvPatchVectorField
            # fixedRhoUFvPatchVectorField not implemented yet
            rhoUboundaryTypes[ patchi ] = fixedRhoUFvPatchVectorField.typeName
            pass
@@ -73,7 +73,7 @@ def _rhoEboundaryTypes( T ):
            rhoEboundaryTypes[ patchi ] = fixedRhoEFvPatchScalarField.typeName
            pass
         else:
-           from Foam.applications.solvers.compressible.r1_6.rhopSonicFoam.BCs.rhoE import mixedRhoEFvPatchScalarField
+           from BCs.rhoE import mixedRhoEFvPatchScalarField
            rhoEboundaryTypes[ patchi ] = mixedRhoEFvPatchScalarField.typeName
            pass
         pass
@@ -430,11 +430,6 @@ from Foam import FOAM_REF_VERSION, FOAM_BRANCH_VERSION
 if FOAM_REF_VERSION( "==", "010600" ) or FOAM_REF_VERSION( "==", "010700" ) or FOAM_BRANCH_VERSION( "dev", ">=", "010600" ):
    if __name__ == "__main__" :
       argv = sys.argv
-      if len(argv) > 1 and argv[ 1 ] == "-test":
-         argv = None
-         test_dir= os.path.join( os.environ[ "PYFOAM_TESTING_DIR" ],'cases', 'local', 'r1.6', 'compressible', 'rhopSonicFoam', 'shockTube' )
-         argv = [ __file__, "-case", test_dir ]
-         pass
       os._exit( main_standalone( len( argv ), argv ) )
       pass
    pass   
