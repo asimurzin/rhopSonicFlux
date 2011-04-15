@@ -24,25 +24,28 @@
 
 
 #--------------------------------------------------------------------------------------
-import sys, os
 from Foam import FOAM_REF_VERSION, FOAM_BRANCH_VERSION
 if FOAM_REF_VERSION( "==", "010600" ) or FOAM_REF_VERSION( "==", "010700" ) or FOAM_BRANCH_VERSION( "dev", ">=", "010600" ):
-   if __name__ == "__main__" :
-      argv = sys.argv
-      if len(argv) > 1 and argv[ 1 ] == "-test":
-         argv = None
-         test_dir= os.path.join( os.environ[ "PYFOAM_TESTING_DIR" ],'cases', 'local', 'r1.6', 'compressible', 'rhopSonicFoam', 'shockTube' )
-         argv = [ __file__, "-case", test_dir ]
-         pass
-      from Foam.applications.solvers.compressible.r1_6.rhopSonicFoam.solver import main_standalone
-      os._exit( main_standalone( len( argv ), argv ) )
-      pass
-   else:
-      from Foam.applications.solvers.compressible.r1_6.rhopSonicFoam.solver import *
-   pass   
-else:
-   from Foam.OpenFOAM import ext_Info
-   ext_Info()<< "\nTo use this solver, It is necessary to SWIG OpenFoam1.6 or 1.7.0\n "
-   
+    from rhopSonicFlux.r1_6 import *
+    pass   
 
 
+#--------------------------------------------------------------------------------------
+def entry_point():
+    try:
+       import sys; argv = sys.argv
+       return main_standalone( len( argv ), argv )
+    except NameError:
+       print
+       print "There is no implementation of the current OpenFOAM version"
+       print
+       pass
+
+
+#--------------------------------------------------------------------------------------
+if __name__ == "__main__" :
+    entry_point()
+    pass
+    
+    
+#--------------------------------------------------------------------------------------
